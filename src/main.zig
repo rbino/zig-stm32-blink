@@ -1,5 +1,6 @@
-const std = @import("std");
-
-pub fn main() anyerror!void {
-    std.log.info("All your codebase are belong to us.", .{});
+export fn main() void {
+    var i: u32 = 0;
+    while (true) {
+        i += 1;
+    }
 }

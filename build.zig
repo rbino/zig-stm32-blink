@@ -1,27 +1,30 @@
 const Builder = @import("std").build.Builder;
+const std = @import("std");
 
 pub fn build(b: *Builder) void {
-    // Standard target options allows the person running `zig build` to choose
-    // what target to build for. Here we do not override the defaults, which
-    // means any target is allowed, and the default is native. Other options
-    // for restricting supported target set are available.
-    const target = b.standardTargetOptions(.{});
+    // Target STM32F407VG
+    const target = std.zig.CrossTarget{
+        .cpu_arch = std.Target.Cpu.Arch.arm,
+        .cpu_model = std.build.Target.CpuModel{ .explicit = &std.Target.arm.cpu.cortex_m4 },
+        .os_tag = std.Target.Os.Tag.freestanding,
+        .abi = std.builtin.Abi.eabihf,
+    };
 
     // Standard release options allow the person running `zig build` to select
     // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
     const mode = b.standardReleaseOptions();
 
-    const exe = b.addExecutable("zig-stm32-blink", "src/main.zig");
+    const exe = b.addExecutable("zig-stm32-blink.elf", "src/startup.zig");
     exe.setTarget(target);
     exe.setBuildMode(mode);
-    exe.install();
 
-    const run_cmd = exe.run();
-    run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
+    const main_obj = b.addObject("main", "src/main.zig");
+    main_obj.setTarget(target);
+    main_obj.setBuildMode(mode);
 
-    const run_step = b.step("run", "Run the app");
-    run_step.dependOn(&run_cmd.step);
+    exe.addObject(main_obj);
+    exe.setLinkerScriptPath("src/linker.ld");
+
+    b.default_step.dependOn(&exe.step);
+    b.installArtifact(exe);
 }
