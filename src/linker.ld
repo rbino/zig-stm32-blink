@@ -33,6 +33,17 @@ EXTERN (vector_table)
 /* Define the entry point of the output file. */
 ENTRY(resetHandler)
 
+/* This provide weak linking to empty handlers, which can be overridden */
+PROVIDE(nmiHandler = nullHandler);
+PROVIDE(hardFaultHandler = blockingHandler);
+PROVIDE(memoryManagementFaultHandler = blockingHandler);
+PROVIDE(busFaultHandler = blockingHandler);
+PROVIDE(usageFaultHandler = blockingHandler);
+PROVIDE(svCallHandler = nullHandler);
+PROVIDE(debugMonitorHandler = nullHandler);
+PROVIDE(pendSVHandler = nullHandler);
+PROVIDE(sysTickHandler = nullHandler);
+
 /* Define sections. */
 SECTIONS
 {

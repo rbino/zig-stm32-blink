@@ -23,30 +23,41 @@ export fn resetHandler() void {
     unreachable;
 }
 
-fn blockingHandler() callconv(.C) void {
+export fn blockingHandler() void {
     while (true) {}
 }
 
-fn nullHandler() callconv(.C) void {}
+export fn nullHandler() void {}
 
 // Not a function, but pretend it is to suppress type error
 extern fn _stack() void;
 
+// These are all functions that can be overriden
+extern fn nmiHandler() void;
+extern fn hardFaultHandler() void;
+extern fn memoryManagementFaultHandler() void;
+extern fn busFaultHandler() void;
+extern fn usageFaultHandler() void;
+extern fn svCallHandler() void;
+extern fn debugMonitorHandler() void;
+extern fn pendSVHandler() void;
+extern fn sysTickHandler() void;
+
 export const vector_table linksection(".vectors") = [_]?fn () callconv(.C) void{
     _stack,
     resetHandler, // Reset
-    nullHandler, // NMI
-    blockingHandler, // Hard fault
-    blockingHandler, // Memory management fault
-    blockingHandler, // Bus fault
-    blockingHandler, // Usage fault
+    nmiHandler, // NMI
+    hardFaultHandler, // Hard fault
+    memoryManagementFaultHandler, // Memory management fault
+    busFaultHandler, // Bus fault
+    usageFaultHandler, // Usage fault
     null, // Reserved 1
     null, // Reserved 2
     null, // Reserved 3
     null, // Reserved 4
-    nullHandler, // SVCall
+    svCallHandler, // SVCall
+    debugMonitorHandler, // Debug monitor
     null, // Reserved 5
-    null, // Reserved 6
-    nullHandler, // PendSV
-    nullHandler, // SysTick
+    pendSVHandler, // PendSV
+    sysTickHandler, // SysTick
 };
