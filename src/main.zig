@@ -3,9 +3,26 @@ const regs = @import("registers.zig");
 export fn main() void {
     systemInit();
 
-    var i: u32 = 0;
+    regs.RCC.AHB1ENR.modify(.{ .GPIODEN = 1 });
+
+    regs.GPIOD.MODER.modify(.{ .MODER12 = 0b01, .MODER13 = 0b01, .MODER14 = 0b01, .MODER15 = 0b01 });
+
+    regs.GPIOD.BSRR.modify(.{ .BS12 = 1, .BS14 = 1 });
+
     while (true) {
-        i += 1;
+        var leds_state = regs.GPIOD.ODR.read();
+        regs.GPIOD.ODR.modify(.{
+            .ODR12 = ~leds_state.ODR12,
+            .ODR13 = ~leds_state.ODR13,
+            .ODR14 = ~leds_state.ODR14,
+            .ODR15 = ~leds_state.ODR15,
+        });
+
+        var i: u32 = 0;
+        while (i < 60000) {
+            asm volatile ("nop");
+            i += 1;
+        }
     }
 }
 
