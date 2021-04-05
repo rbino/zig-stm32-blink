@@ -18,14 +18,10 @@ pub fn build(b: *Builder) void {
     exe.setTarget(target);
     exe.setBuildMode(mode);
 
-    const main_obj = b.addObject("main", "src/main.zig");
-    main_obj.setTarget(target);
-    main_obj.setBuildMode(mode);
     const vector_obj = b.addObject("vector", "src/vector.zig");
     vector_obj.setTarget(target);
     vector_obj.setBuildMode(mode);
 
-    exe.addObject(main_obj);
     exe.addObject(vector_obj);
     exe.setLinkerScriptPath("src/linker.ld");
 

@@ -1,6 +1,6 @@
 const regs = @import("registers.zig");
 
-export fn main() void {
+pub fn main() void {
     systemInit();
 
     regs.RCC.AHB1ENR.modify(.{ .GPIODEN = 1 });

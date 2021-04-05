@@ -1,4 +1,5 @@
-extern fn main() void;
+usingnamespace @import("main.zig");
+
 extern var _data_loadaddr: u32;
 extern var _data: u32;
 extern var _data_size: u32;
@@ -17,7 +18,7 @@ export fn resetHandler() void {
     const bss_size = @ptrToInt(&_bss_size);
     for (bss[0..bss_size]) |*b| b.* = 0;
 
-    // start
+    // Call main imported from main.zig
     main();
 
     unreachable;
