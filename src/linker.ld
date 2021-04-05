@@ -34,6 +34,7 @@ EXTERN (vector_table)
 ENTRY(resetHandler)
 
 /* This provide weak linking to empty handlers, which can be overridden */
+PROVIDE(resetHandler = blockingHandler);
 PROVIDE(nmiHandler = nullHandler);
 PROVIDE(hardFaultHandler = blockingHandler);
 PROVIDE(memoryManagementFaultHandler = blockingHandler);
