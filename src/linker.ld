@@ -27,7 +27,7 @@ MEMORY
 	ram (rwx) : ORIGIN = 0x20000000, LENGTH = 128K
 }
 
-/* Enforce emmition of the vector table. */
+/* Enforce emission of the vector table. */
 EXTERN (vector_table)
 
 /* Define the entry point of the output file. */
@@ -130,4 +130,5 @@ SECTIONS
 	end = .;
 }
 
+/* Export the initial stack pointer address */
 PROVIDE(_stack = ORIGIN(ram) + LENGTH(ram));

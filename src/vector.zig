@@ -5,6 +5,7 @@ export fn blockingHandler() void {
 
 export fn nullHandler() void {}
 
+// This comes from the linker script and represents the initial stack pointer address.
 // Not a function, but pretend it is to suppress type error
 extern fn _stack() void;
 
