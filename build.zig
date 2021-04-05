@@ -14,17 +14,31 @@ pub fn build(b: *Builder) void {
     // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
     const mode = b.standardReleaseOptions();
 
-    const exe = b.addExecutable("zig-stm32-blink.elf", "src/startup.zig");
-    exe.setTarget(target);
-    exe.setBuildMode(mode);
+    const elf = b.addExecutable("zig-stm32-blink.elf", "src/startup.zig");
+    elf.setTarget(target);
+    elf.setBuildMode(mode);
 
     const vector_obj = b.addObject("vector", "src/vector.zig");
     vector_obj.setTarget(target);
     vector_obj.setBuildMode(mode);
 
-    exe.addObject(vector_obj);
-    exe.setLinkerScriptPath("src/linker.ld");
+    elf.addObject(vector_obj);
+    elf.setLinkerScriptPath("src/linker.ld");
 
-    b.default_step.dependOn(&exe.step);
-    b.installArtifact(exe);
+    const bin = b.addInstallRaw(elf, "zig-stm32-blink.bin");
+    const bin_step = b.step("bin", "Generate binary file to be flashed");
+    bin_step.dependOn(&bin.step);
+
+    const flash_cmd = b.addSystemCommand(&[_][]const u8{
+        "st-flash",
+        "write",
+        b.getInstallPath(bin.dest_dir, bin.dest_filename),
+        "0x8000000",
+    });
+    flash_cmd.step.dependOn(&bin.step);
+    const flash_step = b.step("flash", "Flash and run the app on your STM32F4Discovery");
+    flash_step.dependOn(&flash_cmd.step);
+
+    b.default_step.dependOn(&elf.step);
+    b.installArtifact(elf);
 }
