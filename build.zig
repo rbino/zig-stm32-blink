@@ -1,4 +1,5 @@
 const Builder = @import("std").build.Builder;
+const builtin = @import("builtin");
 const std = @import("std");
 
 pub fn build(b: *Builder) void {
@@ -7,7 +8,7 @@ pub fn build(b: *Builder) void {
         .cpu_arch = std.Target.Cpu.Arch.arm,
         .cpu_model = .{ .explicit = &std.Target.arm.cpu.cortex_m4 },
         .os_tag = std.Target.Os.Tag.freestanding,
-        .abi = std.builtin.Abi.eabihf,
+        .abi = std.Target.Abi.eabihf,
     };
 
     // Standard release options allow the person running `zig build` to select
