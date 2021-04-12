@@ -25,7 +25,7 @@ pub fn main() void {
 
         // Sleep for some time
         var i: u32 = 0;
-        while (i < 60000) {
+        while (i < 600000) {
             asm volatile ("nop");
             i += 1;
         }
