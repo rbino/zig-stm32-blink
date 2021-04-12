@@ -110,7 +110,6 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;
   } >ram AT >rom
-  _data_size = SIZEOF(.data);
   _data_loadaddr = LOADADDR(.data);
 
   .bss : {
@@ -120,7 +119,6 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;
   } >ram
-  _bss_size = SIZEOF(.bss);
 
   /*
    * The .eh_frame section appears to be used for C++ exception handling.
