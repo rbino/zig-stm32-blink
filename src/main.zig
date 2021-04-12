@@ -103,6 +103,13 @@ fn systemInit() void {
     // Enable flash data and instruction cache and set flash latency to 5 wait states
     regs.FLASH.ACR.modify(.{ .DCEN = 1, .ICEN = 1, .LATENCY = 5 });
 
+    // Select PLL as clock source
+    regs.RCC.CFGR.modify(.{ .SW1 = 1, .SW0 = 0 });
+
+    // Wait for PLL selected as clock source
+    var cfgr = regs.RCC.CFGR.read();
+    while (cfgr.SWS1 != 1 and cfgr.SWS0 != 0) : (cfgr = regs.RCC.CFGR.read()) {}
+
     // Disable HSI
     regs.RCC.CR.modify(.{ .HSION = 0 });
 }
