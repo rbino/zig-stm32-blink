@@ -2,6 +2,9 @@
 
 Make LEDs blink on an STM32F4 Discovery board using only Zig (and a linker script).
 
+See [my blogpost](https://rbino.com/posts/zig-stm32-blink/) for a more thorough explanation of
+what's going on.
+
 ## Build
 
 The code was tested with Zig `0.7.1` and with Zig `0.8.0-dev.1509+b54514d9d`.
