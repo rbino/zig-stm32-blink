@@ -5,10 +5,10 @@ const std = @import("std");
 pub fn build(b: *Builder) void {
     // Target STM32F407VG
     const target = .{
-        .cpu_arch = std.Target.Cpu.Arch.arm,
+        .cpu_arch = .thumb,
         .cpu_model = .{ .explicit = &std.Target.arm.cpu.cortex_m4 },
-        .os_tag = std.Target.Os.Tag.freestanding,
-        .abi = std.Target.Abi.eabihf,
+        .os_tag = .freestanding,
+        .abi = .eabihf,
     };
 
     // Standard release options allow the person running `zig build` to select
