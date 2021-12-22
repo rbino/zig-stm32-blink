@@ -7,7 +7,7 @@ what's going on.
 
 ## Build
 
-The code was tested with Zig `0.7.1` and with Zig `0.8.0-dev.1509+b54514d9d`.
+The code was tested with Zig `0.9.0`.
 
 To build the ELF file just run:
 
@@ -40,7 +40,7 @@ openocd -f board/stm32f4discovery.cfg
 ```
 
 Then from another terminal navigate to the directory containing the ELF output (i.e.
-`zig-cache/bin`) and run:
+`zig-out/bin`) and run:
 
 ```
 gdb-multiarch zig-stm32-blink.elf -ex "target remote :3333"
@@ -65,7 +65,7 @@ After that, you can emulate the board with:
 
 ```
 qemu-system-gnuarmeclipse -machine STM32F4-Discovery -mcu STM32F407VG \
-  -kernel zig-cache/bin/zig-stm32-blink.elf -gdb tcp::3333
+  -kernel zig-out/bin/zig-stm32-blink.elf -gdb tcp::3333
 ```
 
 You should see the blinking LEDs on the board image, and you can connect a `gdb` instance to it (see

@@ -52,11 +52,11 @@ pub fn RegisterRW(comptime Read: type, comptime Write: type) type {
             self.raw_ptr.* = value;
         }
 
-        pub fn default_read_value(self: Self) Read {
+        pub fn default_read_value(_: Self) Read {
             return Read{};
         }
 
-        pub fn default_write_value(self: Self) Write {
+        pub fn default_write_value(_: Self) Write {
             return Write{};
         }
     };
